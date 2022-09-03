@@ -1,12 +1,13 @@
 {% extends "layout.html" %}
-
 {% block content %}
     <legend class="border-bottom mb-4">My Tasks</legend>
     {% for task in tasks %}
-        <div class="card text-justify">
+        <div class="card text-justify mb-4">
             <div class="card-body">
-                <h5 class="card-title">{{ task.title }}
-                <span class="text-right">{{ task.date_tasked }}</span></h5>
+                <div class="d-flex">
+                    <h5 class="card-title">{{ task.title }}</h5>
+                    <span class="card-text ms-auto">{{ task.date_tasked }}</span>
+                </div>
                 <p class="card-text">{{ task.content }}</p>
             </div>
             <div class="card-footer text-muted">

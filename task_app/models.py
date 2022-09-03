@@ -1,0 +1,24 @@
+from datetime import datetime
+from task_app import db
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(20), unique=True, nullable=False)
+    email = db.Column(db.String(100), unique=True, nullable=False)
+    password = db.Column(db.String(60), nullable=False)
+    tasks = db.relationship("Task", backref="author", lazy=True)
+
+    def __repr__(self):
+        return f"User('{self.username}', '{self.email}')"
+
+
+class Task(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    content = db.Column(db.Text)
+    date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    date_tasked = db.Column(db.DateTime, default=None)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+
+    def __repr__(self):
+        return f"Task('{self.title}', '{self.date_created}', '{self.date_tasked}')"
