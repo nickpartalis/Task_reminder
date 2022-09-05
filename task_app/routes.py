@@ -1,6 +1,6 @@
 from flask import render_template, url_for, flash, redirect, request
 from task_app import app, db, bcrypt
-from task_app.forms import RegistrationForm, LoginForm
+from task_app.forms import RegistrationForm, LoginForm, UpdateAccountForm
 from task_app.models import User, Task
 from flask_login import login_user, current_user, logout_user, login_required
 
@@ -69,7 +69,18 @@ def logout():
     logout_user()
     return redirect(url_for("home"))
 
-@app.route("/account")
+@app.route("/account", methods=["GET", "POST"])
 @login_required
 def account():
-    return render_template("account.html")
+    form = UpdateAccountForm()
+    if form.validate_on_submit(): 
+        if form.username.data != current_user.username or form.email.data != current_user.email:
+            current_user.username = form.username.data
+            current_user.email = form.email.data
+            db.session.commit()
+            flash("Your account information have been updated.", "success")
+            return redirect(url_for("account"))
+    elif request.method == "GET":
+        form.username.data = current_user.username
+        form.email.data = current_user.email
+    return render_template("account.html", form=form)
