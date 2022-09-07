@@ -1,35 +1,17 @@
+from datetime import datetime
 from flask import render_template, url_for, flash, redirect, request
 from task_app import app, db, bcrypt
-from task_app.forms import RegistrationForm, LoginForm, UpdateAccountForm
+from task_app.forms import RegistrationForm, LoginForm, UpdateAccountForm, TaskForm
 from task_app.models import User, Task
 from flask_login import login_user, current_user, logout_user, login_required
 
 
-dummy_tasks = [
-    {
-        "title": "Get a job",
-        "content": "Gotta get a job",
-        "date_created": "03/09/22",
-        "date_tasked": ""
-    },
-    {
-        "title": "Mom's birthday",
-        "content": "",
-        "date_created": "03/09/22",
-        "date_tasked": "14/04"
-    },
-    {
-        "title": "Do the dishes",
-        "content": "Gotta do the dishes. Throw the trash out, too",
-        "date_created": "04/09/22",
-        "date_tasked": "04/09/22"
-    },
-]
-
 @app.route("/")
 @app.route("/home")
+@login_required
 def home():
-    return render_template("home.html", tasks=dummy_tasks)
+    tasks = Task.query.filter_by(user_id=current_user.id).all()
+    return render_template("home.html", tasks=tasks)
 
 @app.route("/about")
 def about():
@@ -84,3 +66,23 @@ def account():
         form.username.data = current_user.username
         form.email.data = current_user.email
     return render_template("account.html", form=form)
+
+
+@app.route("/task/new", methods=["GET", "POST"])
+@login_required
+def new_task():
+    form = TaskForm()
+    if form.validate_on_submit():
+        task = Task(title=form.title.data, content=form.content.data, 
+                    date_tasked=form.date_tasked.data, user_id=current_user.id)
+        db.session.add(task)
+        db.session.commit()
+        flash("Your task has been created.", "success")
+        return redirect(url_for("home"))
+    return render_template("create_task.html", form=form)
+
+@app.route("/task/<int:task_id>", methods=["GET", "POST"])
+@login_required
+def task(task_id):
+    task = Task.query.get_or_404(task_id)
+    return render_template("task.html", task=task)

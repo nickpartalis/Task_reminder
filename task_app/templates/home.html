@@ -1,19 +1,21 @@
 {% extends "layout.html" %}
 {% block content %}
-    <legend class="border-bottom mb-4">My Tasks</legend>
+    <legend class="border-bottom mb-4 mt-4">My Tasks</legend>
     {% for task in tasks %}
         <div class="card text-justify mb-4">
+            <a href="{{ url_for('task', task_id=task.id) }}" class="stretched-link"></a>
             <div class="card-body">
                 <div class="d-flex">
                     <h5 class="card-title">{{ task.title }}</h5>
-                    <span class="card-text ms-auto">{{ task.date_tasked }}</span>
+                    <span class="card-text ms-auto">
+                        {{ task.date_tasked if task.date_tasked.strftime("%Y-%m-%d") != "1970-01-01" else "" }}
+                    </span>
                 </div>
                 <p class="card-text">{{ task.content }}</p>
             </div>
-            <div class="card-footer text-muted">
-                <small class="text-right">Created: {{task.date_created}}</small>
+            <div class="card-footer text-muted d-flex">
+                <small class="ms-auto">Created: {{ task.date_created.strftime("%Y-%m-%d") }}</small>
             </div>
         </div>
     {% endfor %}
-
 {% endblock content %}
