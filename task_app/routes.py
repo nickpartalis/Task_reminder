@@ -1,7 +1,6 @@
-from datetime import datetime
-from flask import render_template, url_for, flash, redirect, request
+from flask import render_template, url_for, flash, redirect, request, abort
 from task_app import app, db, bcrypt
-from task_app.forms import RegistrationForm, LoginForm, UpdateAccountForm, TaskForm
+from task_app.forms import RegistrationForm, LoginForm, UpdateAccountForm, TaskCreateForm, TaskUpdateForm
 from task_app.models import User, Task
 from flask_login import login_user, current_user, logout_user, login_required
 
@@ -71,7 +70,7 @@ def account():
 @app.route("/task/new", methods=["GET", "POST"])
 @login_required
 def new_task():
-    form = TaskForm()
+    form = TaskCreateForm()
     if form.validate_on_submit():
         task = Task(title=form.title.data, content=form.content.data, 
                     date_tasked=form.date_tasked.data, user_id=current_user.id)
@@ -79,10 +78,43 @@ def new_task():
         db.session.commit()
         flash("Your task has been created.", "success")
         return redirect(url_for("home"))
-    return render_template("create_task.html", form=form)
+    return render_template("create_task.html", form=form, legend="Create Task")
 
 @app.route("/task/<int:task_id>", methods=["GET", "POST"])
 @login_required
 def task(task_id):
     task = Task.query.get_or_404(task_id)
+    if task.user_id != current_user.id:
+        abort(403)
     return render_template("task.html", task=task)
+
+@app.route("/task/<int:task_id>/update", methods=["GET", "POST"])
+@login_required
+def update_task(task_id):
+    task = Task.query.get_or_404(task_id)
+    if task.user_id != current_user.id:
+        abort(403)
+    form = TaskUpdateForm()
+    
+    if form.validate_on_submit():
+        task.title = form.title.data
+        task.content = form.content.data
+        task.date_tasked = form.date_tasked.data
+        db.session.commit()
+        flash("Task updated.", "success")
+        return redirect(url_for("home", task_id=task.id))
+    elif request.method == "GET":
+        form.title.data = task.title
+        form.content.data = task.content
+    return render_template("create_task.html", form=form, legend="Update Task")
+
+@app.route("/task/<int:task_id>/delete", methods=["GET", "POST"])
+@login_required
+def delete_task(task_id):
+    task = Task.query.get_or_404(task_id)
+    if task.user_id != current_user.id:
+        abort(403)
+    db.session.delete(task)
+    db.session.commit()
+    flash("Task deleted.", "success")
+    return redirect(url_for("home"))

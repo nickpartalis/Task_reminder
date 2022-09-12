@@ -48,11 +48,18 @@ class UpdateAccountForm(FlaskForm):
                 raise ValidationError('That email is taken. Please choose a different one.')
 
 
-class TaskForm(FlaskForm):
+class TaskFormMixin(FlaskForm):
     title = StringField("Title", validators=[DataRequired()])
     content = TextAreaField("Content")
     date_tasked = DateField("Date Tasked")
+    
+
+class TaskCreateForm(TaskFormMixin):
     submit = SubmitField("Create Task")
+
+
+class TaskUpdateForm(TaskFormMixin):
+    submit = SubmitField("Update Task")
 
 
 

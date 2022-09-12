@@ -10,8 +10,31 @@
             </div>
             <p class="card-text">{{ task.content }}</p>
         </div>
-        <div class="card-footer text-muted d-flex">
+        <div class="card-footer text-muted d-flex align-items-center">
+            <a class="btn btn-primary btn-sm me-1" href="{{ url_for('update_task', task_id=task.id) }}">
+              <i class="bi bi-pencil"></i>
+            </a>
+            <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal">
+              <i class="bi bi-trash"></i>
+            </button>
             <small class="ms-auto">Created: {{ task.date_created.strftime("%Y-%m-%d") }}</small>
         </div>
     </div>
+    <!-- Delete Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="deleteModalLabel">Delete Task?</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Back</button>
+              <form action="{{ url_for('delete_task', task_id=task.id) }}">
+                <input class="btn btn-danger" type="submit" value="Delete">
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
 {% endblock content %}
