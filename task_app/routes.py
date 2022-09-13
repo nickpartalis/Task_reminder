@@ -14,7 +14,7 @@ def home():
 
 @app.route("/about")
 def about():
-    return render_template("about.html")
+    return render_template("about.html", pagetitle="About")
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -28,7 +28,7 @@ def register():
         db.session.commit()
         flash("Your account has been created! You can now log in.", "success")
         return redirect(url_for("login"))
-    return render_template("register.html", form=form)
+    return render_template("register.html", form=form, pagetitle="Register")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -43,7 +43,7 @@ def login():
             flash("You are now logged in.", "success")
             return redirect(next_page) if next_page else redirect(url_for("home"))
         flash("Login unsuccessful. Please check your email and password.", "danger")
-    return render_template("login.html", form=form)
+    return render_template("login.html", form=form, pagetitle="Login")
 
 @app.route("/logout")
 def logout():
@@ -64,7 +64,7 @@ def account():
     elif request.method == "GET":
         form.username.data = current_user.username
         form.email.data = current_user.email
-    return render_template("account.html", form=form)
+    return render_template("account.html", form=form, pagetitle="My Account")
 
 
 @app.route("/task/new", methods=["GET", "POST"])
@@ -78,7 +78,7 @@ def new_task():
         db.session.commit()
         flash("Your task has been created.", "success")
         return redirect(url_for("home"))
-    return render_template("create_task.html", form=form, legend="Create Task")
+    return render_template("create_task.html", form=form, legend="Create Task", pagetitle="Create Task")
 
 @app.route("/task/<int:task_id>", methods=["GET", "POST"])
 @login_required
@@ -106,7 +106,7 @@ def update_task(task_id):
     elif request.method == "GET":
         form.title.data = task.title
         form.content.data = task.content
-    return render_template("create_task.html", form=form, legend="Update Task")
+    return render_template("create_task.html", form=form, legend="Update Task", pagetitle="Update Task")
 
 @app.route("/task/<int:task_id>/delete", methods=["GET", "POST"])
 @login_required
