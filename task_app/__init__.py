@@ -22,8 +22,10 @@ def create_app(config_class=Config):
     from task_app.users.routes import users
     from task_app.tasks.routes import tasks
     from task_app.main.routes import main
+    from task_app.errors.handlers import errors
     app.register_blueprint(users)
     app.register_blueprint(tasks)
     app.register_blueprint(main)
+    app.register_blueprint(errors)
 
     return app
