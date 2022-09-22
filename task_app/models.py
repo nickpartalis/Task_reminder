@@ -1,6 +1,8 @@
 from datetime import datetime, date
 from task_app import db, login_manager
+from flask import current_app
 from flask_login import UserMixin
+import jwt
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -13,6 +15,25 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
     tasks = db.relationship("Task", backref="author", lazy=True)
+
+    def get_reset_token(self, expiration=600):
+        reset_token = jwt.encode({"user_id": self.id},
+            current_app.config['SECRET_KEY'],
+            algorithm="HS256"
+        )
+        return reset_token
+
+    @staticmethod
+    def verify_reset_token(token):
+        try:
+            user_id = jwt.decode(
+                token,
+                current_app.config['SECRET_KEY'],
+                algorithms=["HS256"]
+            )['user_id']
+        except:
+            return None
+        return User.query.get(user_id)
 
     def __repr__(self):
         return f"User('{self.username}', '{self.email}')"
