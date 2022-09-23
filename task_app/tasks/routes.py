@@ -36,7 +36,6 @@ def update_task(task_id):
     if task.user_id != current_user.id:
         abort(403)
     form = TaskUpdateForm()
-    
     if form.validate_on_submit():
         task.title = form.title.data
         task.content = form.content.data
@@ -47,6 +46,7 @@ def update_task(task_id):
     elif request.method == "GET":
         form.title.data = task.title
         form.content.data = task.content
+        form.date_tasked.data = task.date_tasked
     return render_template("create_task.html", form=form, legend="Update Task", pagetitle="Update Task")
 
 @tasks.route("/task/<int:task_id>/delete", methods=["GET", "POST"])

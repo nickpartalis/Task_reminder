@@ -44,7 +44,7 @@ class Task(db.Model):
     title = db.Column(db.String(100), nullable=False)
     content = db.Column(db.Text)
     date_created = db.Column(db.Date, nullable=False, default=datetime.utcnow)
-    date_tasked = db.Column(db.Date, default=date(1970, 1, 1)) # Date cannot be null. TODO validation
+    date_tasked = db.Column(db.Date, nullable=True, default=None)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
 
     def __repr__(self):
