@@ -19,7 +19,7 @@ def new_task():
         db.session.commit()
         flash("Your task has been created.", "success")
         return redirect(url_for("main.home"))
-    return render_template("create_task.html", form=form, legend="Create Task", pagetitle="Create Task")
+    return render_template("create_task.html", form=form, legend="New Task", pagetitle="New Task")
 
 @tasks.route("/task/<int:task_id>", methods=["GET", "POST"])
 @login_required

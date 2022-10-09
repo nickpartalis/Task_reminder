@@ -5,7 +5,7 @@
             {{ form.hidden_tag() }}
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4">{{ legend }}</legend>
-                <div class="form-group">
+                <div class="mb-3">
                     {{ form.title.label(class="form-label") }}
 
                     {% if form.title.errors %}
@@ -19,7 +19,7 @@
                         {{ form.title(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
-                <div class="form-group">
+                <div class="mb-3">
                     {{ form.content.label(class="form-label") }}
 
                     {% if form.content.errors %}
@@ -33,7 +33,7 @@
                         {{ form.content(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
-                <div class="form-group date">
+                <div class="mb-3 date">
                     {{ form.date_tasked.label(class="form-label") }}
 
                     {% if form.date_tasked.errors %}
@@ -48,7 +48,7 @@
                     {% endif %}
                 </div>
             </fieldset>
-            <div class="form-group">
+            <div class="mb-3">
                 {{ form.submit(class="btn btn-primary") }}
             </div>
         </form>

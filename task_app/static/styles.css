@@ -1,0 +1,10 @@
+.alert, .alert .btn-close {
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.card {
+    background-color: #fff8bb;
+    color: #53513d;
+}
+
