@@ -8,3 +8,12 @@
     color: #53513d;
 }
 
+.footer a {
+    color: inherit;
+    text-decoration: inherit;
+}
+
+.footer a:hover {
+    filter: brightness(1.2);
+}
+

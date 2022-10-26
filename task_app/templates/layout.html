@@ -15,57 +15,64 @@
     <title>Task Reminder</title>
   {% endif %}
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
   <nav class="navbar navbar-expand-sm navbar-dark bg-dark sticky-top mb-2" aria-label="Third navbar example">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="{{ url_for('main.home') }}">Task Reminder</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
-              data-bs-target="#navbarsExample03" aria-controls="navbarsExample03" 
-              aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <!-- Navbar Left Side -->
-        <div class="collapse navbar-collapse" id="navbarsExample03">
-          <ul class="navbar-nav me-auto mb-2 mb-sm-0">
-            <li class="nav-item"><a class="nav-link active" aria-current="page" href="{{ url_for('main.home') }}">Home</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('main.about') }}">About</a></li>
-          </ul>
-          <!-- Navbar Right Side -->
-          <ul class="navbar-nav mb-2 mb-sm-0">  
-            {% if current_user.is_authenticated %}
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('tasks.new_task') }}">New Task</a></li>
-              <li class="nav-item"><a class="nav-link" href="{{ url_for('users.account') }}">Account</a></li>  
-              <li class="nav-item"><a class="nav-link" href="{{ url_for('users.logout') }}">Logout</a></li>              
-            {% else %}              
-              <li class="nav-item"><a class="nav-link" href="{{ url_for('users.login') }}">Login</a></li>
-              <li class="nav-item"><a class="nav-link" href="{{ url_for('users.register') }}">Register</a></li>
-            {% endif%}  
-          </ul>
-        </div>
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{{ url_for('main.home') }}">Task Reminder</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+          data-bs-target="#navbar" aria-controls="navbar" 
+          aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <!-- Navbar Left Side -->
+      <div class="collapse navbar-collapse" id="navbar">
+        <ul class="navbar-nav me-auto mb-2 mb-sm-0">
+          <li class="nav-item"><a class="nav-link active" aria-current="page" href="{{ url_for('main.home') }}">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('main.about') }}">About</a></li>
+        </ul>
+        <!-- Navbar Right Side -->
+        <ul class="navbar-nav mb-2 mb-sm-0">  
+          {% if current_user.is_authenticated %}
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('tasks.new_task') }}">New Task</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('users.account') }}">Account</a></li>  
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('users.logout') }}">Logout</a></li>              
+          {% else %}              
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('users.login') }}">Login</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('users.register') }}">Register</a></li>
+          {% endif%}  
+        </ul>
       </div>
-    </nav>
+    </div>
+  </nav>
 
-    <main role="main" class="container">
-        <div class="row">
-          <div class="col-md-10 mx-auto">
-            <!-- flash() message -->
-            {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                    {% for category, message in messages %}
-                        <div class="alert alert-{{ category }} alert-dismissible" role="alert">
-                            {{ message }}
-                            <button type="button" class="btn-close btn-close-sm" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
-            <!-- Main content -->
-            {% block content %}{% endblock %}
-          </div>
-        </div>
-      </main>
-    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" 
-            integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous">
-    </script>
-  </body>
+  <main role="main" class="container">
+    <div class="row">
+      <div class="col-md-10 mx-auto">
+        <!-- flash() message -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close btn-close-sm" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <!-- Main content -->
+        {% block content %}{% endblock %}
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer pt-4 mt-auto">
+    <p class="text-center text-muted">© 2022 Nick Partalis 
+      <a href="https://github.com/nickpartalis"><i class="bi bi-github fs-4 ms-1"></i></a>
+    </p>
+  </footer>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" 
+          integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous">
+  </script>
+</body>
 </html>

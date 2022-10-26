@@ -43,7 +43,7 @@ class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     content = db.Column(db.Text)
-    date_created = db.Column(db.Date, nullable=False, default=datetime.utcnow)
+    date_created = db.Column(db.Date, nullable=False, default=datetime.now)
     date_tasked = db.Column(db.Date, nullable=True, default=None)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
 

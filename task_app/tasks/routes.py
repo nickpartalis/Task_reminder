@@ -1,5 +1,4 @@
-from flask import Blueprint
-from flask import render_template, url_for, flash, redirect, request, abort
+from flask import Blueprint, render_template, url_for, flash, redirect, request, abort
 from task_app import db
 from task_app.tasks.forms import TaskCreateForm, TaskUpdateForm
 from task_app.models import Task
