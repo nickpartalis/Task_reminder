@@ -14,11 +14,12 @@
   {% else %}
     <title>Task Reminder</title>
   {% endif %}
+  <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
 </head>
 <body class="d-flex flex-column min-vh-100">
   <nav class="navbar navbar-expand-sm navbar-dark bg-dark sticky-top mb-2" aria-label="Third navbar example">
     <div class="container-fluid">
-      <a class="navbar-brand" href="{{ url_for('main.home') }}">Task Reminder</a>
+      <a class="navbar-brand" href="{{ url_for('main.home') }}">MyTaskReminder</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
           data-bs-target="#navbar" aria-controls="navbar" 
           aria-expanded="false" aria-label="Toggle navigation">
